@@ -8,7 +8,6 @@ public class TicTacToe {
         initializeBoard();
     }
 
-
     private void initializeBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -18,11 +17,16 @@ public class TicTacToe {
     }
 
     public void printBoard() {
+        // Print column indices
+        System.out.println("   0   1   2");
+        System.out.println(" +---+---+---+");
+
         for (int i = 0; i < 3; i++) {
+            System.out.print(i + "|");
             for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(" " + board[i][j] + " |");
             }
-            System.out.println();
+            System.out.println("\n +---+---+---+");
         }
     }
 
@@ -31,8 +35,8 @@ public class TicTacToe {
             board[row][col] = currentPlayer;
             switchPlayer();
             return true;
+
         } else {
-            System.out.println("Invalid move. The cell is already occupied.");
             return false;
         }
     }
@@ -79,6 +83,7 @@ public class TicTacToe {
         }
         return true;
     }
+
     public char getCurrentPlayer() {
         return currentPlayer;
     }

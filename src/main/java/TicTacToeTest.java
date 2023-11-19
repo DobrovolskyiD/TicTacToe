@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TicTacToeTest {
@@ -13,12 +14,24 @@ public class TicTacToeTest {
             System.out.println("Current board:");
             game.printBoard();
 
-            int row, col;
-            do {
-                System.out.println("Player " + game.getCurrentPlayer() + ", enter your move (row and column, separated by space): ");
-                row = scanner.nextInt();
-                col = scanner.nextInt();
-            } while (!game.makeMove(row, col));
+            int row = -1, col = -1; // Initialize with default values
+
+            try {
+                do {
+                    System.out.println("Player " + game.getCurrentPlayer() + ", enter your move (row and column, separated by space): ");
+                    row = getInput("Enter the row: ", scanner);
+                    col = getInput("Enter the column: ", scanner);
+
+                    if (!isValidMove(row, col)) {
+                        System.out.println("Invalid move. Please enter a valid move within the board.");
+                    } else if (!game.makeMove(row, col)) {
+                        System.out.println("Invalid move. The cell is already occupied.");
+                    }
+                } while (!isValidMove(row, col));
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter integers for row and column.");
+                scanner.nextLine(); // clear the invalid input
+            }
 
             System.out.println("\n---------------------------------\n");
         }
@@ -34,5 +47,25 @@ public class TicTacToeTest {
         }
 
         scanner.close();
+    }
+
+    private static int getInput(String prompt, Scanner scanner) {
+        int input;
+
+        while (true) {
+            System.out.print(prompt);
+            try {
+                input = Integer.parseInt(scanner.nextLine());
+                break; // Exit the loop if parsing is successful
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer for row and column.");
+            }
+        }
+
+        return input;
+    }
+
+    private static boolean isValidMove(int row, int col) {
+        return row >= 0 && row < 3 && col >= 0 && col < 3;
     }
 }
